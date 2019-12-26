@@ -4,4 +4,5 @@ My solutions for the advent of code, currently used to deepen my GoLang knowledg
 
 ## 2019
 
-1. [Day One](./2019/01) 
+1. [Day One](./2019/01/main.go) 
+1. [Day Two](./2019/02/main.go) 
