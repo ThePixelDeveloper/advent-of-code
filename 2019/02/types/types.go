@@ -8,8 +8,8 @@ import (
 type Input string
 
 // SplitInt allows us to split a string into a slice of integers.
-func (i Input) SplitInt(delimiter string) []int {
-	var instructions []int
+func (i Input) SplitInt(delimiter string) []string {
+	var instructions []string
 
 	for _, s := range strings.Split(string(i), delimiter) {
 		if i, err := strconv.Atoi(s); err == nil {

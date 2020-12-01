@@ -3,6 +3,7 @@ package computer
 import (
 	"github.com/thepixeldeveloper/advent-of-code/2019/02/opcode"
 	"github.com/thepixeldeveloper/advent-of-code/2019/02/types"
+	"github.com/thepixeldeveloper/advent-of-code/2019/05/computer"
 )
 
 func Calculate(input types.Input) string {
@@ -10,7 +11,7 @@ func Calculate(input types.Input) string {
 
 loop:
 	for i := 0; i < len(instructions); {
-		switch instructions[i] {
+		switch computer.MustOpcode(instructions[i]) {
 		case opcode.ADD:
 			i += add(i, instructions)
 			break
@@ -26,8 +27,9 @@ loop:
 }
 
 func multiply(i int, instructions []int) int {
-	left := instructions[instructions[i+1]]
-	right := instructions[instructions[i+2]]
+	left := computer.MustReadValue(instructions[i], instructions, 0)
+	right :=  computer.MustReadValue(instructions[i], instructions, 1)
+	
 	output := instructions[i+3]
 
 	instructions[output] = left * right
