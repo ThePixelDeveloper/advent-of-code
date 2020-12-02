@@ -4,6 +4,7 @@ My solutions for the advent of code, currently used to deepen my GoLang knowledg
 
 ## 2020
 1. [Day One](./2020/01/main.go)
+1. [Day Two](./2020/02/main.go)
 
 ## 2019
 
