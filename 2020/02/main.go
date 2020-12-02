@@ -17,23 +17,16 @@ func main() {
 		matches := regex.FindStringSubmatch(fixtures.Input[i])
 
 		var (
-			min, _   = strconv.Atoi(matches[1])
-			max, _   = strconv.Atoi(matches[2])
+			one, _   = strconv.Atoi(matches[1])
+			two, _   = strconv.Atoi(matches[2])
 			letter   = matches[3]
 			password = matches[4]
-			count    = 0
 		)
 
-		for _, c := range password {
-			if string(c) == letter {
-				count++
-			}
-		}
-
-		if count >= min && count <= max {
+		if (string(password[one-1]) == letter && string(password[two-1]) != letter) || (string(password[two-1]) == letter && string(password[one-1]) != letter) {
 			compliant++
 		}
 	}
 
-	fmt.Printf("part 1 result: %d", compliant)
+	fmt.Printf("part 2 result: %d", compliant)
 }

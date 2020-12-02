@@ -1,6 +1,9 @@
 package fixtures
 
 var Input = []string{
+	//"1-3 a: abcde",
+	//"1-3 b: cdefg",
+	//"2-9 c: ccccccccc",
 	"4-6 b: bbbdbtbbbj",
 	"1-6 g: ggvggbgggstg",
 	"1-4 s: lssss",
