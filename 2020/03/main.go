@@ -15,10 +15,27 @@ func main() {
 	)
 
 	for {
+		// Part 1
 		i = i + 1
 		j = j + 3
 
-		if i == len(forest) {
+		// Part 2 (Lazy!)
+		//i = i + 1
+		//j = j + 1
+
+		//i = i + 1
+		//j = j + 3
+
+		//i = i + 1
+		//j = j + 5
+
+		//i = i + 1
+		//j = j + 6
+
+		//i = i + 2
+		//j = j + 1
+
+		if i >= len(forest) {
 			break
 		}
 
