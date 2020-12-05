@@ -9,19 +9,28 @@ func main() {
 	passes := fixtures.Input
 
 	var (
-		highest = 0
-		id      = 0
+		occupied = map[int]bool{}
+		empty    = []int{}
 	)
 
 	for _, pass := range passes {
-		id = seatIdentifier(pass)
+		occupied[seatIdentifier(pass)] = true
+	}
 
-		if id > highest {
-			highest = id
+	for i := 0; i < 842; i++ {
+		if _, ok := occupied[i]; ok {
+			continue
+		}
+
+		_, previous := occupied[i-1]
+		_, next := occupied[i+1]
+
+		if previous && next {
+			empty = append(empty, i)
 		}
 	}
 
-	fmt.Printf("part 1 result: %d", highest)
+	fmt.Printf("part 2 result: %+v", empty[0])
 }
 
 func seatIdentifier(boardingPass []string) int {
