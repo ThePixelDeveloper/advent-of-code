@@ -16,18 +16,30 @@ func main() {
 	)
 
 	for _, group := range groups {
+		answers := strings.Split(group, "\n")
+
+		// If the group size is one, short circuit
+		if len(answers) == 1 {
+			total += len(answers[0])
+			continue
+		}
+
 		var (
 			count = map[uint8]int{}
 		)
 
-		for _, s := range strings.Split(group, "\n") {
+		for _, s := range answers {
 			answerUnique(count, s)
 		}
 
-		total += len(count)
+		for _, i := range count {
+			if i == len(answers) {
+				total += 1
+			}
+		}
 	}
 
-	fmt.Printf("part 1 result: %d", total)
+	fmt.Printf("part 2 result: %d", total)
 }
 
 func answerUnique(count map[uint8]int, input string) {
