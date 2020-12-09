@@ -5,13 +5,13 @@ import (
 	"github.com/thepixeldeveloper/advent-of-code/2020/07/data"
 	"github.com/thepixeldeveloper/advent-of-code/2020/07/fixtures"
 	"regexp"
+	"strconv"
 	"strings"
 )
 
 func main() {
 	container := parse(fixtures.Input)
-
-	fmt.Printf("part 1 result: %d", container.Count("shiny gold"))
+	fmt.Printf("part 2 result: %d", container.Count("shiny gold"))
 }
 
 func parse(input string) data.Container {
@@ -28,7 +28,10 @@ func parse(input string) data.Container {
 
 		// Bags
 		for _, i := range matches[1:] {
-			c[container[2]] = append(c[container[2]], i[2])
+			count, _ := strconv.Atoi(i[1])
+			for j := 0; j < count; j++ {
+				c[container[2]] = append(c[container[2]], i[2])
+			}
 		}
 	}
 

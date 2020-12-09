@@ -3,12 +3,10 @@ package data
 type Container map[string][]string
 
 func (c Container) Count(colour string) int {
-	count := 0
+	count := len(c[colour])
 
-	for container := range c {
-		if c.Has(container, colour) {
-			count++
-		}
+	for _, bag := range c[colour] {
+		count += c.Count(bag)
 	}
 
 	return count
