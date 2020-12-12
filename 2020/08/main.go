@@ -2,46 +2,42 @@ package main
 
 import (
 	"fmt"
+	"github.com/thepixeldeveloper/advent-of-code/2020/08/computer"
 	"github.com/thepixeldeveloper/advent-of-code/2020/08/fixtures"
-	"strconv"
 	"strings"
 )
 
 func main() {
-	accumulator := 0
-
 	lines := strings.Split(fixtures.Input, "\n")
 
-	currentLine := lines[0]
-	currentIndex := 0
-	direction := 1
-	visited := make(map[int]struct{})
+	var (
+		instructions []*computer.Instruction
+		permutations [][]*computer.Instruction
+	)
 
-	for {
-		switch true {
-		case strings.HasPrefix(currentLine, "nop"):
-			direction = 1
-			break
+	for _, line := range lines {
+		instructions = append(instructions, computer.NewInstruction(line))
+	}
 
-		case strings.HasPrefix(currentLine, "acc"):
-			acc, _ := strconv.Atoi(strings.Split(currentLine, " ")[1])
-			accumulator += acc
-			direction = 1
-			break
+	permutations = make([][]*computer.Instruction, len(instructions))
 
-		case strings.HasPrefix(currentLine, "jmp"):
-			direction, _ = strconv.Atoi(strings.Split(currentLine, " ")[1])
-			break
+	for i := 0; i < len(instructions); i++ {
+		for j := 0; j < len(instructions); j++ {
+			if i == j {
+				if instructions[i].IsJmp() {
+					permutations[i] = append(permutations[i], instructions[i].ToNop())
+					continue
+				}
+			}
+
+			permutations[i] = append(permutations[i], instructions[j])
 		}
+	}
 
-		currentIndex += direction
-		currentLine = lines[currentIndex]
-
-		if _, ok := visited[currentIndex]; ok {
-			fmt.Printf("part 1 result: %d", accumulator)
-			break
+	for _, instructions := range permutations {
+		execute, err := computer.Execute(instructions)
+		if err != nil {
+			fmt.Printf("part 2 result: %d - %s\n", execute, err)
 		}
-
-		visited[currentIndex] = struct{}{}
 	}
 }
