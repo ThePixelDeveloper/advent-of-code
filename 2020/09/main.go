@@ -9,43 +9,53 @@ import (
 
 func main() {
 	var (
-		preamble       []int
-		preambleSums   map[int]struct{}
-		preambleLength = 25
-		input          = fixtures.Input
-		lines          = strings.Split(input, "\n")
+		target = 85848519
+		values []int
+		input  = fixtures.Input
+		lines  = strings.Split(input, "\n")
 	)
 
-	preamble = make([]int, len(lines))
+	values = make([]int, len(lines))
 
 	for i, line := range lines {
 		atoi, _ := strconv.Atoi(line)
-		preamble[i] = atoi
+		values[i] = atoi
 	}
 
-	for i := preambleLength; i < len(preamble); i++ {
-		preambleSums = CalculateSums(preamble, i-preambleLength, preambleLength)
-		if _, ok := preambleSums[preamble[i]]; !ok {
-			fmt.Printf("part 1 result: %d\n", preamble[i])
-		}
-	}
+	result := EqualsTarget(target, 0, values)
+
+	fmt.Printf("part 2 result: %d", result)
 }
 
-func CalculateSums(preamble []int, start int, preambleLength int) map[int]struct{} {
+func EqualsTarget(target int, start int, values []int) int {
 	var (
-		preambleSums map[int]struct{}
+		smallest int
+		largest  int
+		count    int
 	)
 
-	preambleSums = make(map[int]struct{}, preambleLength*preambleLength)
+	smallest = values[start]
+	largest = values[start]
 
-	for _, i := range preamble[start : start+preambleLength] {
-		for _, j := range preamble[start : start+preambleLength] {
-			if i == j {
-				continue
-			}
-			preambleSums[i+j] = struct{}{}
+	for i := start; i < len(values); i++ {
+		count += values[i]
+
+		if values[i] > largest {
+			largest = values[i]
+		}
+
+		if values[i] < smallest {
+			smallest = values[i]
+		}
+
+		if count > target {
+			return EqualsTarget(target, start+1, values)
+		}
+
+		if count == target {
+			return smallest + largest
 		}
 	}
 
-	return preambleSums
+	return 0
 }
