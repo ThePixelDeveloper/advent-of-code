@@ -28,6 +28,11 @@ func main() {
 					permutations[i] = append(permutations[i], instructions[i].ToNop())
 					continue
 				}
+
+				if instructions[i].IsNop() {
+					permutations[i] = append(permutations[i], instructions[i].ToJmp())
+					continue
+				}
 			}
 
 			permutations[i] = append(permutations[i], instructions[j])
@@ -36,7 +41,7 @@ func main() {
 
 	for _, instructions := range permutations {
 		execute, err := computer.Execute(instructions)
-		if err != nil {
+		if err != nil && err.Error() == "execution finished" {
 			fmt.Printf("part 2 result: %d - %s\n", execute, err)
 		}
 	}
