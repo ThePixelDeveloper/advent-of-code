@@ -3,63 +3,76 @@ package main
 import (
 	"fmt"
 	"github.com/thepixeldeveloper/advent-of-code/2020/10/fixtures"
+	"sort"
 	"strconv"
 	"strings"
 )
 
 func main() {
-	lines := strings.Split(fixtures.Input, "\n")
-
 	var (
-		voltages         map[string]struct{}
-		maxVoltage       int
-		maxVoltageBuffer = 3
+		lines    = strings.Split(fixtures.Input, "\n")
+		voltages = make([]int, 0, len(lines))
 	)
-
-	voltages = make(map[string]struct{}, 0)
 
 	for i := 0; i < len(lines); i++ {
-		voltage := parseVoltage(lines[i])
-		voltages[lines[i]] = struct{}{}
-
-		if voltage > maxVoltage {
-			maxVoltage = voltage
-		}
+		voltages = append(voltages, parseVoltage(lines[i]))
 	}
 
-	maxVoltage += maxVoltageBuffer
+	sort.Ints(voltages)
 
-	voltages[strconv.Itoa(maxVoltage)] = struct{}{}
-
-	fmt.Printf("part 1 result: %+v", doStuff(voltages, 0))
+	fmt.Printf("part 2 result: %+v", possibilities(deltas(voltages)))
 }
-
-func doStuff(voltages map[string]struct{}, start int) int {
+func possibilities(deltas []int) int {
 	var (
-		i           = start
-		difference  int
-		differences map[int]int
+		recurse func(deltas []int) int
+		cache   = make(map[string]int)
 	)
 
-	differences = make(map[int]int)
+	recurse = func(deltas []int) int {
+		deltasAsString := fmt.Sprintf("%+v", deltas)
 
-	for {
-		_, ok := voltages[strconv.Itoa(i)]
-
-		if !ok && difference > 3 {
-			break
+		if val, ok := cache[deltasAsString]; ok {
+			return val
 		}
 
-		if ok {
-			differences[difference]++
-			difference = 0
+		if len(deltas) <= 1 {
+			return 1
 		}
 
-		difference++
-		i++
+		if deltas[0]+deltas[1] > 3 {
+			return recurse(deltas[1:])
+		}
+
+		meh := make([]int, len(deltas))
+
+		copy(meh, deltas)
+
+		meh[1] = meh[0] + meh[1]
+
+		result := recurse(deltas[1:]) + recurse(meh[1:])
+
+		cache[deltasAsString] = result
+
+		return result
 	}
 
-	return differences[1] * differences[3]
+	return recurse(deltas)
+}
+
+func deltas(voltages []int) []int {
+	var (
+		previous int
+		deltas   []int
+	)
+
+	for _, voltage := range voltages {
+		deltas = append(deltas, voltage-previous)
+		previous = voltage
+	}
+
+	deltas = append(deltas, 3)
+
+	return deltas
 }
 
 func parseVoltage(input string) int {
