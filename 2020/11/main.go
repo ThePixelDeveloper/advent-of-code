@@ -29,20 +29,21 @@ func simulate(grid [][]string) [][]string {
 
 	for i, row := range grid {
 		output = append(output, []string{})
-
 		for j, col := range row {
-			empty, emptyMax := countAdjacent(grid, i, j, []string{".", "L"})
-
-			if col == "L" && empty == emptyMax {
-				output[i] = append(output[i], "#")
-				continue
+			if col == "L" {
+				occupied := countVisible(grid, i, j, []string{"#"})
+				if occupied == 0 {
+					output[i] = append(output[i], "#")
+					continue
+				}
 			}
 
-			occupied, _ := countAdjacent(grid, i, j, []string{"#"})
-
-			if col == "#" && occupied >= 4 {
-				output[i] = append(output[i], "L")
-				continue
+			if col == "#" {
+				occupied := countVisible(grid, i, j, []string{"#"})
+				if occupied >= 5 {
+					output[i] = append(output[i], "L")
+					continue
+				}
 			}
 
 			output[i] = append(output[i], col)
@@ -68,38 +69,59 @@ func count(grid [][]string, search []string) int {
 	return count
 }
 
-func countAdjacent(grid [][]string, row int, col int, search []string) (int, int) {
+func countVisible(grid [][]string, row int, col int, search []string) int {
 	var (
-		count     int
-		available int
+		count int
+		steps = [][]int{
+			{0, -1},  // North
+			{1, -1},  // North East
+			{1, 0},   // East
+			{1, 1},   // South East
+			{0, 1},   // South
+			{-1, 1},  // South West
+			{-1, 0},  // West
+			{-1, -1}, // North West
+		}
 	)
 
-	for i := row - 1; i <= row+1; i++ {
-		if i < 0 || i >= len(grid) {
+	var (
+		step = 0
+		x    = col
+		y    = row
+	)
+
+	for {
+		if step >= len(steps) {
+			break
+		}
+
+		x += steps[step][0]
+		y += steps[step][1]
+
+		if (x < 0 || y < 0) || (y >= len(grid) || x >= len(grid[y])) && step < len(steps) {
+			step++
+			x = col
+			y = row
 			continue
 		}
 
-		for j := col - 1; j <= col+1; j++ {
-			if i == row && j == col {
+		for _, s := range search {
+			if grid[y][x] == "." {
 				continue
 			}
 
-			if j < 0 || j >= len(grid[i]) {
-				continue
+			if grid[y][x] == s {
+				count++
 			}
 
-			available++
-
-			for _, s := range search {
-				if grid[i][j] == s {
-					count++
-					break
-				}
-			}
+			step++
+			x = col
+			y = row
+			continue
 		}
 	}
 
-	return count, available
+	return count
 }
 
 func cols(input []string) [][]string {
