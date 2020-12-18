@@ -14,6 +14,7 @@ My solutions for the advent of code, currently used to deepen my GoLang knowledg
 1. [Day Nine](./2020/09/main.go)
 1. [Day Ten](./2020/10/main.go)
 1. [Day Eleven](./2020/11/main.go)
+1. [Day Twelve](./2020/12/main.go)
 
 ## 2019
 
