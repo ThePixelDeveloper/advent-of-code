@@ -12,38 +12,46 @@ type Instruction struct {
 	west        int
 }
 
-func (i Instruction) execute(direction int, x int, y int) (int, int, int) {
-	direction += i.rotateLeft + i.rotateRight
-
-	if direction < 0 {
-		direction += 360
-	}
-
-	direction %= 360
+// * 4 * * *
+// * * * * 1
+// * * 0 * *
+// 3 * * * *
+// * * * 2 *
+func (i Instruction) execute(direction int, x int, y int, shipX int, shipY int) (int, int, int, int, int) {
+	rotateLeft := i.rotateLeft
+	rotateRight := i.rotateRight
 
 	y += i.north + i.south
 	x += i.east + i.west
 
-	switch direction {
-	case 0:
-		y += i.forward
-	case 90:
-		x += i.forward
-	case 180:
-		y -= i.forward
-	case 270:
-		x -= i.forward
+	shipX += i.forward * x
+	shipY += i.forward * y
+
+	for {
+		if rotateLeft > 0 {
+			x, y = -y, x
+			rotateLeft -= 90
+		}
+
+		if rotateRight > 0 {
+			x, y = y, -x
+			rotateRight -= 90
+		}
+
+		if rotateLeft == 0 && rotateRight == 0 {
+			break
+		}
 	}
 
-	return direction, x, y
+	return direction, x, y, shipX, shipY
 }
 
-func Simulate(instructions []Instruction, direction int, x int, y int) (int, int, int) {
+func Simulate(instructions []Instruction, direction int, x int, y int, shipX int, shipY int) (int, int, int, int, int) {
 	for _, i := range instructions {
-		direction, x, y = i.execute(direction, x, y)
+		direction, x, y, shipX, shipY = i.execute(direction, x, y, shipX, shipY)
 	}
 
-	return direction, x, y
+	return direction, x, y, shipX, shipY
 }
 
 func Parse(input []string) []Instruction {
@@ -71,7 +79,7 @@ func Parse(input []string) []Instruction {
 			i.west = pace * -1
 			break
 		case "L":
-			i.rotateLeft = pace * -1
+			i.rotateLeft = pace
 			break
 		case "R":
 			i.rotateRight = pace
