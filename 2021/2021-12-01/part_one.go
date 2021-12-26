@@ -1,16 +1,11 @@
 package main
 
 import (
-	_ "embed"
-	"fmt"
 	"github.com/ThePixelDeveloper/advent-of-code/2021/utils"
 	"github.com/thoas/go-funk"
 )
 
-//go:embed _input
-var file string
-
-func main() {
+func partOne() int {
 	values := funk.Map(
 		utils.SplitLines(file),
 		utils.StringToInt,
@@ -48,5 +43,5 @@ func main() {
 		return x[1] > x[0]
 	})
 
-	fmt.Printf("answer: %+v", len(filtered.([][]int)))
+	return len(filtered.([][]int))
 }
