@@ -6,34 +6,26 @@ import (
 )
 
 func partTwo() int {
-	const (
-		WIN      = 6
-		DRAW     = 3
-		LOSE     = 0
-		ROCK     = 1
-		PAPER    = 2
-		SCISSORS = 3
-	)
+	a := make(map[rune]int, 52)
 
-	scores := make(map[string]int)
-	// Rock
-	scores["A X"] = SCISSORS + LOSE // Lose
-	scores["A Y"] = ROCK + DRAW     // Draw
-	scores["A Z"] = PAPER + WIN     // Win
+	for i, l := range []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ") {
+		a[l] = i + 1
+	}
 
-	// Paper
-	scores["B X"] = ROCK + LOSE    // Lose
-	scores["B Y"] = PAPER + DRAW   // Draw
-	scores["B Z"] = SCISSORS + WIN // Win
-
-	// Scissors
-	scores["C X"] = PAPER + LOSE    // Lose
-	scores["C Y"] = SCISSORS + DRAW // Draw
-	scores["C Z"] = ROCK + WIN      // Win
-
-	return lo.Sum(
-		lo.Map[string, int](strings.Split(file, "\n"), func(item string, _ int) int {
-			return scores[item]
-		}),
-	)
+	return lo.Sum(lo.Map[[]rune, int](
+		lo.Map[[]string, []rune](
+			lo.Chunk[string](strings.Split(file, "\n"), 3), func(item []string, index int) []rune {
+				return lo.Uniq[rune](
+					lo.Intersect[rune](
+						lo.Intersect[rune](
+							[]rune(item[0]),
+							[]rune(item[1]),
+						),
+						[]rune(item[2]),
+					),
+				)
+			}), func(item []rune, index int) int {
+			return a[item[0]]
+		},
+	))
 }

@@ -10,5 +10,5 @@ var file string
 
 func main() {
 	fmt.Printf("answer part 1: %+v\n", partOne())
-	//fmt.Printf("answer part 2: %+v\n", partTwo())
+	fmt.Printf("answer part 2: %+v\n", partTwo())
 }
