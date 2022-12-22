@@ -1,21 +1,17 @@
-module github.com/thepixeldeveloper/advent-of-code
+module github.com/ThePixelDeveloper/advent-of-code
 
-go 1.13
+go 1.19
 
 require (
-	github.com/cosiner/argv v0.0.1 // indirect
-	github.com/go-delve/delve v1.3.2 // indirect
-	github.com/konsorten/go-windows-terminal-sequences v1.0.2 // indirect
-	github.com/mattn/go-colorable v0.1.4 // indirect
-	github.com/mattn/go-isatty v0.0.11 // indirect
-	github.com/mattn/go-runewidth v0.0.7 // indirect
-	github.com/peterh/liner v1.1.0 // indirect
-	github.com/sirupsen/logrus v1.4.2 // indirect
-	github.com/spf13/cobra v0.0.5 // indirect
-	github.com/spf13/pflag v1.0.5 // indirect
-	github.com/stretchr/testify v1.3.0
-	go.starlark.net v0.0.0-20191227232015-caa3e9aa5008 // indirect
-	golang.org/x/arch v0.0.0-20191126211547-368ea8f32fff // indirect
-	golang.org/x/tools v0.0.0-20201211185031-d93e913c1a58
-	gopkg.in/yaml.v2 v2.2.7 // indirect
+	github.com/ThePixelDeveloper/advent-of-code/2021 v0.0.0-20211226210150-827af673ad87
+	github.com/samber/lo v1.37.0
+	github.com/stretchr/testify v1.4.0
+	github.com/thoas/go-funk v0.9.1
+)
+
+require (
+	github.com/davecgh/go-spew v1.1.1 // indirect
+	github.com/pmezard/go-difflib v1.0.0 // indirect
+	golang.org/x/exp v0.0.0-20220303212507-bbda1eaf7a17 // indirect
+	gopkg.in/yaml.v2 v2.2.2 // indirect
 )
